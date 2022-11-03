@@ -17,20 +17,21 @@ const Template: Story<IButton> = (args: any) => (
 export const LargeButton = Template.bind({});
 LargeButton.args = {
   type: "L",
-  children: "Start Game",
+  btnText: "Start Game",
   onClick: () => {},
 };
 
 export const MediumButton = Template.bind({});
 MediumButton.args = {
   type: "M",
-  children: "Numbers",
   disabled: false,
+  btnText: "Numbers",
   onClick: () => {},
 };
 
 export const SmallButton = Template.bind({});
 SmallButton.args = {
-  children: "New Game",
+  color: theme.colors.orange,
+  btnText: "Restart",
   onClick: () => {},
 };

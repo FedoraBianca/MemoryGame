@@ -22,8 +22,6 @@ export const LargeButton = styled(GeneralBtnStyles)`
   padding: 16px 32px;
   background-color: ${theme.colors.orange};
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-  font-size: 2rem;
-  line-height: 2.5rem;
   color: ${theme.colors.lightWhite};
 
   &:hover {
@@ -36,8 +34,6 @@ export const MediumButton = styled(GeneralBtnStyles)`
   padding: 10px 20px;
   background-color: ${(props) =>
     props.disabled ? theme.colors.lightBlue : theme.colors.charcoal};
-  font-size: 1.625rem;
-  line-height: 2rem;
   color: ${theme.colors.lightWhite};
   pointer-events: ${(props) => (props.disabled ? "none" : "unset")};
 
@@ -48,13 +44,23 @@ export const MediumButton = styled(GeneralBtnStyles)`
 
 export const SmallButton = styled(GeneralBtnStyles)`
   padding: 14px 28px;
-  background-color: ${theme.colors.whiteGrey};
-  font-size: 1.25rem;
-  line-height: 1.563rem;
+  background-color: ${(props) =>
+    props.color ? props.color : theme.colors.whiteGrey};
   color: ${theme.colors.charcoal};
 
+  h3 {
+    color: ${(props) =>
+      props.color ? theme.colors.lightWhite : theme.colors.charcoal};
+  }
+
   &:hover {
-    background-color: ${theme.colors.blue};
+    background-color: ${(props) =>
+      props.color ? theme.colors.lightOrange : theme.colors.blue};
     color: ${theme.colors.lightWhite};
+
+    h3 {
+      color: ${(props) =>
+        props.color ? theme.colors.lightWhite : theme.colors.lightWhite};
+    }
   }
 `;

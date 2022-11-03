@@ -1,21 +1,24 @@
 import React from "react";
 import { LargeButton, MediumButton, SmallButton } from "./Button.style";
 import { theme } from "../../styles/Theme.style";
+import Heading from "../Heading";
 
 export interface IButton {
-  children: React.ReactNode;
   onClick: (e: React.MouseEvent) => void;
   type?: "S" | "M" | "L";
   disabled?: boolean;
   className?: string;
+  color?: string;
+  btnText: string;
 }
 
 const Button: React.FC<IButton> = ({
-  children,
   onClick,
   type,
   disabled = false,
   className = "",
+  color,
+  btnText,
 }) => {
   switch (type) {
     case "L":
@@ -25,7 +28,7 @@ const Button: React.FC<IButton> = ({
           onClick={onClick}
           className={className}
         >
-          {children}
+          <Heading size="L" children={btnText} />
         </LargeButton>
       );
     case "M":
@@ -35,7 +38,7 @@ const Button: React.FC<IButton> = ({
           onClick={onClick}
           className={className}
         >
-          {children}
+          <Heading size="S" children={btnText} />
         </MediumButton>
       );
     case "S":
@@ -44,8 +47,9 @@ const Button: React.FC<IButton> = ({
           disabled={disabled}
           onClick={onClick}
           className={className}
+          color={color}
         >
-          {children}
+          <Heading size="S" children={btnText} />
         </SmallButton>
       );
     default:
@@ -54,8 +58,9 @@ const Button: React.FC<IButton> = ({
           disabled={disabled}
           onClick={onClick}
           className={className}
+          color={color}
         >
-          {children}
+          <Heading size="S" children={btnText} />
         </SmallButton>
       );
   }
