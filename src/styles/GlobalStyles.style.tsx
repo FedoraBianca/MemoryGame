@@ -5,9 +5,9 @@ import { Typography } from "./Typography.style";
 import { Layout } from "./Layout.style";
 
 export const GlobalStyles = createGlobalStyle`
-  ${ Normalize }
-  ${ Typography }
-  ${ Layout }
+  ${Normalize}
+  ${Typography}
+  ${Layout}
 
   html, body, #root {
     height: 100%;
@@ -25,4 +25,4 @@ export const GlobalStyles = createGlobalStyle`
   *, *:before, *:after {
     box-sizing: border-box;
   }
-`
+`;

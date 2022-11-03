@@ -1,2 +1,2 @@
-export const Layout =`
-`
+export const Layout = `
+`;
