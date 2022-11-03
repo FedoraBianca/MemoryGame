@@ -1,8 +1,9 @@
 import React from "react";
-import { Route } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 import { GlobalStyles } from "./styles/GlobalStyles.style";
 import { theme } from "./styles/Theme.style";
+import Logo from "./components/Logo";
+import Heading from "./components/Heading";
 import Button from "./components/Button/Button";
 
 const App = () => {
@@ -18,6 +19,9 @@ const App = () => {
         onClick={() => {}}
         btnText="New Game"
       />
+      <Logo color={theme.colors.black}>
+        <Heading size="L" children="memory"></Heading>
+      </Logo>
     </ThemeProvider>
   );
 };

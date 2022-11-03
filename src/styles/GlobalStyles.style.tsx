@@ -3,6 +3,7 @@ import { Normalize } from "./Normalize.style";
 import { theme } from "./Theme.style";
 import { Typography } from "./Typography.style";
 import { Layout } from "./Layout.style";
+import './icomoon.css';
 
 export const GlobalStyles = createGlobalStyle`
   ${Normalize}
