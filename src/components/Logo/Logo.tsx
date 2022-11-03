@@ -1,8 +1,18 @@
-import logo from "./assets/logo.svg";
+import React from "react";
 import { LogoStyle } from "./Logo.style";
 
-const Logo: React.FC = () => {
-  return <LogoStyle src={logo} />;
+export interface ILogo {
+  color: string;
+  children: React.ReactNode;
+  className?: string;
+}
+
+const Logo: React.FC<ILogo> = ({ className = "", children, color }) => {
+  return (
+    <LogoStyle color={color} className={`${className}`}>
+      {children}
+    </LogoStyle>
+  );
 };
 
 export default Logo;
