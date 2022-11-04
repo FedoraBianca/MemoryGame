@@ -1,6 +1,5 @@
 import React from "react";
 import { LargeButton, MediumButton, SmallButton } from "./Button.style";
-import { theme } from "../../styles/Theme.style";
 import Heading from "../Heading";
 
 export interface IButton {
