@@ -10,7 +10,7 @@ export const DiscStyle = styled.div<IDiscWrapper>`
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #fcfcfc;
+  color: ${theme.colors.lightWhite};
   background-color: ${(prop) =>
     prop.matched
       ? theme.colors.orange
