@@ -5,7 +5,8 @@ interface ILogoWrapper {
 }
 
 export const LogoStyle = styled.div<ILogoWrapper>`
-  height: 50px;
+  display: flex;
+  align-items: center;
 
   h1 {
     color: ${(props) => props.color};
