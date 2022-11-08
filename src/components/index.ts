@@ -10,3 +10,4 @@ export { default as StartMenu } from "./StartMenu";
 export { default as HomePage } from "./HomePage";
 export { default as MovesCard } from "./MovesCard";
 export { default as TimerCard } from "./TimerCard";
+export { default as MobileMenu } from "./MobileMenu";
