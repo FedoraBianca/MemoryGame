@@ -12,23 +12,37 @@ export interface IButton {
 }
 
 const Button: React.FC<IButton> = ({
-  onClick,
+  onClick = null,
   type,
   active = false,
   className = "",
   color,
   btnText,
 }) => {
+  const handleClick = (e: React.MouseEvent) => {
+    if (onClick) {
+      onClick(e);
+    }
+  };
+
   switch (type) {
     case "L":
       return (
-        <LargeButton active={active} onClick={onClick} className={className}>
+        <LargeButton
+          active={active}
+          onClick={handleClick}
+          className={className}
+        >
           <Heading size="L" children={btnText} />
         </LargeButton>
       );
     case "M":
       return (
-        <MediumButton active={active} onClick={onClick} className={className}>
+        <MediumButton
+          active={active}
+          onClick={handleClick}
+          className={className}
+        >
           <Heading size="S" children={btnText} />
         </MediumButton>
       );
@@ -36,7 +50,7 @@ const Button: React.FC<IButton> = ({
       return (
         <SmallButton
           active={active}
-          onClick={onClick}
+          onClick={handleClick}
           className={className}
           color={color}
         >
@@ -47,7 +61,7 @@ const Button: React.FC<IButton> = ({
       return (
         <SmallButton
           active={active}
-          onClick={onClick}
+          onClick={handleClick}
           className={className}
           color={color}
         >

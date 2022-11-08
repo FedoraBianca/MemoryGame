@@ -5,7 +5,7 @@ export interface IButton {
   active: boolean;
 }
 
-const GeneralBtnStyles = styled.div<IButton>`
+const GeneralBtnStyles = styled.button<IButton>`
   display: flex;
   justify-content: center;
   align-items: center;
