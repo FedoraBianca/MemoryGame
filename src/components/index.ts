@@ -8,3 +8,4 @@ export { default as ScoreMenu } from "./ScoreMenu";
 export { default as GameContainer } from "./GameContainer";
 export { default as StartMenu } from "./StartMenu";
 export { default as HomePage } from "./HomePage";
+export { default as MobileMenu } from "./MobileMenu";
