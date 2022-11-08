@@ -50,6 +50,10 @@ export class Game {
     return this._winner;
   };
 
+  public get currentTurn() {
+    return this._currentTurn;
+  }
+
   start = () => {
     setTimeout(() => {
       this._time++;
@@ -89,6 +93,14 @@ export class Game {
       } else {
         this._currentTurn = 1;
       }
+    }
+  }
+
+  allDiscsAreFliped(): boolean {
+    if (this._grid.find((disc: IDisc) => disc.flipped)) {
+      return true;
+    } else {
+      return false;
     }
   }
 }
