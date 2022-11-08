@@ -1,10 +1,10 @@
 export type GridSizeType = 'small' | 'large';
 export type PlayerNumberType = 1 | 2 | 3 | 4;
-export enum GameStateEnum {
-  'NOT_STARTED',
-  'IN_PROGRESS',
-  'OVER'
-};
+// export enum GameStateEnum {
+//   'NOT_STARTED',
+//   'IN_PROGRESS',
+//   'OVER'
+// };
 
 export interface IDisc {
   value: number;
@@ -13,14 +13,13 @@ export interface IDisc {
 
 export class Game {
   private _grid: IDisc[] = [];
-  private _movesNumber: number = 0;
+  private _discFlips: number = 0;
+  private _lastDiscIndex: number | null = null;
   private _currentTurn: PlayerNumberType = 1;
   private _gridSize: GridSizeType;
   private _playersNumber: PlayerNumberType;
-  private _time: number = 0;
-  private _state: GameStateEnum = GameStateEnum.NOT_STARTED;;
+  // private _state: GameStateEnum = GameStateEnum.NOT_STARTED;;
   private _winner: PlayerNumberType | null = null;
-  private _selectionIndex: number | null = null;
   private _score: number[];
 
   constructor(gridSize: GridSizeType, playersNumber: PlayerNumberType) {
@@ -39,12 +38,12 @@ export class Game {
   };
   
   public get movesNumber() {
-    return this._movesNumber;
+    return this._discFlips / 2;
   };
 
-  public get state() {
-    return this._state;
-  };
+  // public get state() {
+  //   return this._state;
+  // };
 
   public get winner() {
     return this._winner;
@@ -54,36 +53,37 @@ export class Game {
     return this._currentTurn;
   }
 
-  start = () => {
-    setTimeout(() => {
-      this._time++;
-    }, 1000);
+  public get lastDiscIndex() {
+    return this._lastDiscIndex;
+  }
 
-    this._state = GameStateEnum.IN_PROGRESS;
-  };
+  // start = () => {
+  //   this._state = GameStateEnum.IN_PROGRESS;
+  // };
 
   flipDisc = (index: number) => {
     this._grid[index] = { ...this._grid[index], flipped: true };
-    // Check if there is already a selected disk
-    if (this._selectionIndex) {
-      this._movesNumber++;
-      // If the disks mactch they will remain flipped and the score is updated
-      if (this._grid[this._selectionIndex] !== this._grid[index]) { 
-        this._score[this._currentTurn - 1]++;
-      } else {
-        // otherwise they will hide the content again
-        this._grid[index] = { ...this._grid[index], flipped: false };
-        this._grid[this._selectionIndex] = { ...this._grid[this._selectionIndex], flipped: false };
-      }
-      // clear existing selection to prepare the other turn
-      this._selectionIndex = null;
+    
+    this._discFlips++;
+    // If discFlips is an even number that means we should check if the disks match and also update currentTurn
+    if (this._discFlips % 2 === 0) {
       if (this._playersNumber > 1) {
         this.updatePlayersTurn();
       }
-    } else {
-      // Otherwise, save current selection
-      this._selectionIndex = index;
-    }
+
+      if (this._lastDiscIndex) {
+        // If the disks mactch they will remain flipped and the score is updated
+        if (this._grid[this._lastDiscIndex] !== this._grid[index]) { 
+          this._score[this._currentTurn - 1]++;
+        } else {
+          // otherwise they will hide the content again
+          this._grid[index] = { ...this._grid[index], flipped: false };
+          this._grid[this._lastDiscIndex] = { ...this._grid[this._lastDiscIndex], flipped: false };
+        }
+      }
+    };
+
+    this._lastDiscIndex = index;
   };
 
   updatePlayersTurn() {
