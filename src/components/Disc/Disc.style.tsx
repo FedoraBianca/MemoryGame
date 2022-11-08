@@ -10,6 +10,8 @@ export const DiscStyle = styled.div<IDiscWrapper>`
   display: flex;
   justify-content: center;
   align-items: center;
+  max-width: 80px;
+  max-height: 80px;
   color: ${theme.colors.lightWhite};
   background-color: ${(prop) =>
     prop.matched
@@ -17,7 +19,7 @@ export const DiscStyle = styled.div<IDiscWrapper>`
       : prop.flipped
       ? theme.colors.lightBlue
       : theme.colors.charcoal};
-  border-radius: 41px;
+  border-radius: 50%;
   cursor: pointer;
 
   :hover {
@@ -27,5 +29,9 @@ export const DiscStyle = styled.div<IDiscWrapper>`
         : prop.flipped
         ? theme.colors.lightBlue
         : theme.colors.blue};
+  }
+
+  .disc-content {
+    display: ${(prop) => (prop.flipped ? "flex" : "none")};
   }
 `;
