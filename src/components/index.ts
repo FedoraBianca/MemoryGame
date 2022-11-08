@@ -8,3 +8,5 @@ export { default as ScoreMenu } from "./ScoreMenu";
 export { default as GameContainer } from "./GameContainer";
 export { default as StartMenu } from "./StartMenu";
 export { default as HomePage } from "./HomePage";
+export { default as MovesCard } from "./MovesCard";
+export { default as TimerCard } from "./TimerCard";
