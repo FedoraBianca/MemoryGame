@@ -65,6 +65,7 @@ export const StartMenuStyle = styled.div`
   }
 
   .start-game-btn {
+    width: 100%;
     height: 48px;
     margin-top: 32px;
 

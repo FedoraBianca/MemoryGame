@@ -1,10 +1,16 @@
 import React from "react";
 import Heading from "../Heading";
-
+import { useNavigate } from "react-router-dom";
 import { StartMenuStyle } from "./StartMenu.style";
 import Button from "../Button";
 
 const StartMenu: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleStartGame = () => {
+    navigate(`/:game`);
+  };
+
   return (
     <StartMenuStyle>
       <Heading
@@ -82,7 +88,7 @@ const StartMenu: React.FC = () => {
       </div>
 
       <Button
-        onClick={() => {}}
+        onClick={handleStartGame}
         type="L"
         btnText="Start Game"
         className="start-game-btn"
