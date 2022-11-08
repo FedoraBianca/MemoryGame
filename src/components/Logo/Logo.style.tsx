@@ -5,9 +5,12 @@ interface ILogoWrapper {
 }
 
 export const LogoStyle = styled.div<ILogoWrapper>`
-  height: 50px;
+  display: flex;
+  align-items: center;
 
-  h1 {
+  h1,
+  h2,
+  h3 {
     color: ${(props) => props.color};
   }
 `;

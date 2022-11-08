@@ -1,4 +1,5 @@
 import React from "react";
+import Icon from "../Icon";
 import { DiscStyle } from "./Disc.style";
 
 export interface IDiscProps {
@@ -16,14 +17,24 @@ const Disc: React.FC<IDiscProps> = ({
 }) => {
   if (type === "number") {
     return (
-      <DiscStyle onClick={onClick} flipped={flipped} matched={matched}>
-        2
+      <DiscStyle
+        onClick={onClick}
+        flipped={flipped}
+        matched={matched}
+        className="disc-content"
+      >
+        <span>2</span>
       </DiscStyle>
     );
   } else {
     return (
       <DiscStyle onClick={onClick} flipped={flipped} matched={matched}>
-        icon
+        <Icon
+          icon="camera"
+          color="#111517"
+          size="60px"
+          className="disc-content"
+        />
       </DiscStyle>
     );
   }

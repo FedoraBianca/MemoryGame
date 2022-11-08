@@ -2,7 +2,7 @@ import styled, { css } from "styled-components";
 import { theme } from "../../styles/Theme.style";
 
 export interface IButton {
-  disabled: boolean;
+  active: boolean;
 }
 
 const GeneralBtnStyles = styled.div<IButton>`
@@ -11,6 +11,7 @@ const GeneralBtnStyles = styled.div<IButton>`
   align-items: center;
   border: none;
   border-radius: 26px;
+  cursor: pointer;
 `;
 
 const smallHeight = css`
@@ -33,9 +34,8 @@ export const MediumButton = styled(GeneralBtnStyles)`
   ${smallHeight}
   padding: 10px 20px;
   background-color: ${(props) =>
-    props.disabled ? theme.colors.lightBlue : theme.colors.charcoal};
+    props.active ? theme.colors.charcoal : theme.colors.lightBlue};
   color: ${theme.colors.lightWhite};
-  pointer-events: ${(props) => (props.disabled ? "none" : "unset")};
 
   &:hover {
     background-color: ${theme.colors.blue};

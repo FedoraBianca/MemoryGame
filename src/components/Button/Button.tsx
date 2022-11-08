@@ -5,7 +5,7 @@ import Heading from "../Heading";
 export interface IButton {
   onClick: (e: React.MouseEvent) => void;
   type?: "S" | "M" | "L";
-  disabled?: boolean;
+  active?: boolean;
   className?: string;
   color?: string;
   btnText: string;
@@ -14,7 +14,7 @@ export interface IButton {
 const Button: React.FC<IButton> = ({
   onClick,
   type,
-  disabled = false,
+  active = false,
   className = "",
   color,
   btnText,
@@ -22,28 +22,20 @@ const Button: React.FC<IButton> = ({
   switch (type) {
     case "L":
       return (
-        <LargeButton
-          disabled={disabled}
-          onClick={onClick}
-          className={className}
-        >
+        <LargeButton active={active} onClick={onClick} className={className}>
           <Heading size="L" children={btnText} />
         </LargeButton>
       );
     case "M":
       return (
-        <MediumButton
-          disabled={disabled}
-          onClick={onClick}
-          className={className}
-        >
+        <MediumButton active={active} onClick={onClick} className={className}>
           <Heading size="S" children={btnText} />
         </MediumButton>
       );
     case "S":
       return (
         <SmallButton
-          disabled={disabled}
+          active={active}
           onClick={onClick}
           className={className}
           color={color}
@@ -54,7 +46,7 @@ const Button: React.FC<IButton> = ({
     default:
       return (
         <SmallButton
-          disabled={disabled}
+          active={active}
           onClick={onClick}
           className={className}
           color={color}

@@ -24,7 +24,7 @@ LargeButton.args = {
 export const MediumButton = Template.bind({});
 MediumButton.args = {
   type: "M",
-  disabled: false,
+  active: false,
   btnText: "Numbers",
   onClick: () => {},
 };
