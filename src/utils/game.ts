@@ -1,5 +1,15 @@
-export type GridSizeType = 'small' | 'large';
+export enum GridSizeEnum {
+  small,
+  large
+};
+
+export enum DiscThemeEnum {
+  numbers,
+  icons
+};
+
 export type PlayerNumberType = 1 | 2 | 3 | 4;
+
 // export enum GameStateEnum {
 //   'NOT_STARTED',
 //   'IN_PROGRESS',
@@ -11,21 +21,26 @@ export interface IDisc {
   flipped: boolean;
 }
 
+export interface IGameOptions {
+  gridSize: GridSizeEnum;
+  playersNumber: PlayerNumberType;
+}
+
 export class Game {
   private _grid: IDisc[] = [];
   private _discFlips: number = 0;
   private _lastDiscIndex: number | null = null;
   private _currentTurn: PlayerNumberType = 1;
-  private _gridSize: GridSizeType;
+  private _gridSize: GridSizeEnum;
   private _playersNumber: PlayerNumberType;
   // private _state: GameStateEnum = GameStateEnum.NOT_STARTED;;
   private _winner: PlayerNumberType | null = null;
   private _score: number[];
 
-  constructor(gridSize: GridSizeType, playersNumber: PlayerNumberType) {
-    this._gridSize = gridSize;
-    this._playersNumber = playersNumber;
-    let values: number[] = gridSize === 'small' ?
+  constructor(options: IGameOptions) {
+    this._gridSize = options.gridSize;
+    this._playersNumber = options.playersNumber;
+    let values: number[] = options.gridSize === GridSizeEnum.small ?
     [ ...Array.from({length: 8},(_,i)=>i + 1), ...Array.from({length: 8},(e,i)=>i + 1)] :
       [...Array.from({ length: 18 }, (_, i) => i + 1), ...Array.from({ length: 18 }, (e, i) => i + 1)];
     shuffleArray(values);

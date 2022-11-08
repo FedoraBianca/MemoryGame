@@ -1,9 +1,9 @@
 import { ThemeProvider } from "styled-components";
 import { GlobalStyles } from "./styles/GlobalStyles.style";
 import { theme } from "./styles/Theme.style";
-import GameContainer from "./components/GameContainer";
-import { HomePage } from "./components";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import HomePage from "./pages/HomePage";
+import GamePage from "./pages/GamePage";
 
 const App = () => {
   return (
@@ -12,7 +12,7 @@ const App = () => {
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/game" element={<GameContainer />} />
+          <Route path="/game" element={<GamePage />} />
         </Routes>
       </Router>
     </ThemeProvider>

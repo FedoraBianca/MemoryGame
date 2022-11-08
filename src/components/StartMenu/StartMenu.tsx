@@ -1,14 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import Heading from "../Heading";
 import { useNavigate } from "react-router-dom";
 import { StartMenuStyle } from "./StartMenu.style";
 import Button from "../Button";
+import { DiscThemeEnum, GridSizeEnum, IGameOptions, PlayerNumberType } from "../../utils/game";
 
 const StartMenu: React.FC = () => {
+  const [gameOptions, setGameOptions] = useState<IGameOptions>({ gridSize: GridSizeEnum.small, playersNumber: 1 });
+  const [discTheme, setDiscTheme] = useState<DiscThemeEnum>(DiscThemeEnum.numbers);
   const navigate = useNavigate();
 
+  const updatePlayerNumber = (number: PlayerNumberType) => () => {
+    setGameOptions({ ...gameOptions, playersNumber: number });
+  };
+
+  const updateGridSize = (size: GridSizeEnum) => () => {
+    setGameOptions({ ...gameOptions, gridSize: size });
+  }
+
   const handleStartGame = () => {
-    navigate(`/:game`);
+    navigate(`/game`);
   };
 
   return (
@@ -20,17 +31,17 @@ const StartMenu: React.FC = () => {
       />
       <div className="btn__container">
         <Button
-          onClick={() => {}}
+          onClick={() => setDiscTheme(DiscThemeEnum.numbers)}
           type="M"
           btnText="Numbers"
-          active={true}
+          active={discTheme === DiscThemeEnum.numbers}
           className="start-menu-btn"
         />
         <Button
-          onClick={() => {}}
+          onClick={() => setDiscTheme(DiscThemeEnum.icons)}
           type="M"
           btnText="Icons"
-          active={false}
+          active={discTheme === DiscThemeEnum.icons}
           className="start-menu-btn"
         />
       </div>
@@ -41,48 +52,48 @@ const StartMenu: React.FC = () => {
       />
       <div className="number-players__container">
         <Button
-          onClick={() => {}}
+          onClick={updatePlayerNumber(1)}
           type="M"
           btnText="1"
-          active={true}
+          active={gameOptions.playersNumber === 1}
           className="start-menu-btn"
         />
         <Button
-          onClick={() => {}}
+          onClick={updatePlayerNumber(2)}
           type="M"
           btnText="2"
-          active={false}
+          active={gameOptions.playersNumber === 2}
           className="start-menu-btn"
         />
         <Button
-          onClick={() => {}}
+          onClick={updatePlayerNumber(3)}
           type="M"
           btnText="3"
-          active={false}
+          active={gameOptions.playersNumber === 3}
           className="start-menu-btn"
         />
         <Button
-          onClick={() => {}}
+          onClick={updatePlayerNumber(4)}
           type="M"
           btnText="4"
-          active={false}
+          active={gameOptions.playersNumber === 4}
           className="start-menu-btn"
         />
       </div>
       <Heading size="L" children="Grid size" className="heading__component" />
       <div className="btn__container">
         <Button
-          onClick={() => {}}
+          onClick={updateGridSize(GridSizeEnum.small)}
           type="M"
           btnText="4X4"
-          active={true}
+          active={gameOptions.gridSize === GridSizeEnum.small}
           className="start-menu-btn"
         />
         <Button
-          onClick={() => {}}
+          onClick={updateGridSize(GridSizeEnum.large)}
           type="M"
           btnText="6X6"
-          active={false}
+          active={gameOptions.gridSize === GridSizeEnum.large}
           className="start-menu-btn"
         />
       </div>
