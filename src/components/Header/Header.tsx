@@ -4,8 +4,15 @@ import Heading from "../Heading";
 import Button from "../Button";
 import { HeaderStyles } from "./Header.style";
 import { theme } from "../../styles/Theme.style";
+import { useNavigate } from "react-router-dom";
 
 const Header: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleNewGame = () => {
+    navigate(`/`);
+  };
+
   return (
     <HeaderStyles>
       <Logo color={theme.colors.black}>
@@ -18,7 +25,7 @@ const Header: React.FC = () => {
           onClick={() => {}}
           btnText="Restart"
         />
-        <Button type="S" onClick={() => {}} btnText="New Game" />
+        <Button type="S" onClick={handleNewGame} btnText="New Game" />
       </div>
       <Button
         type="S"
