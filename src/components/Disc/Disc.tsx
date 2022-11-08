@@ -2,14 +2,14 @@ import React from "react";
 import Icon from "../Icon";
 import { DiscStyle } from "./Disc.style";
 
-export interface IDisc {
+export interface IDiscProps {
   type: "number" | "icon";
   onClick: (e: React.MouseEvent) => void;
   flipped: boolean;
   matched: boolean;
 }
 
-const Disc: React.FC<IDisc> = ({
+const Disc: React.FC<IDiscProps> = ({
   type = "number",
   onClick,
   flipped = false,

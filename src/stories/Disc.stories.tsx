@@ -1,4 +1,4 @@
-import Disc, { IDisc } from "../components/Disc/Disc";
+import Disc, { IDiscProps } from "../components/Disc/Disc";
 import { ThemeProvider } from "styled-components";
 import { theme } from "../styles/Theme.style";
 import { Story } from "@storybook/react";
@@ -8,7 +8,7 @@ export default {
   component: Disc,
 };
 
-const Template: Story<IDisc> = (args: any) => (
+const Template: Story<IDiscProps> = (args: any) => (
   <ThemeProvider theme={theme}>
     <Disc {...args} />
   </ThemeProvider>
@@ -17,7 +17,7 @@ const Template: Story<IDisc> = (args: any) => (
 export const DiscUnflipped = Template.bind({});
 DiscUnflipped.args = {
   type: "number",
-  onClick: () => {},
+  onClick: () => { },
   flipped: false,
   matched: false,
 };
@@ -25,7 +25,7 @@ DiscUnflipped.args = {
 export const DiscFlipped = Template.bind({});
 DiscFlipped.args = {
   type: "number",
-  onClick: () => {},
+  onClick: () => { },
   flipped: true,
   matched: false,
 };
@@ -33,7 +33,7 @@ DiscFlipped.args = {
 export const DiscMatched = Template.bind({});
 DiscMatched.args = {
   type: "number",
-  onClick: () => {},
+  onClick: () => { },
   flipped: true,
   matched: true,
 };
