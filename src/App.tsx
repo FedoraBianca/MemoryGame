@@ -1,6 +1,9 @@
 import { ThemeProvider } from "styled-components";
 import { GlobalStyles } from "./styles/GlobalStyles.style";
 import { theme } from "./styles/Theme.style";
+import Modal from "./components/Modal";
+import Header from "./components/Header";
+import ScoreMenu from "./components/ScoreMenu";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import GamePage from "./pages/GamePage";
