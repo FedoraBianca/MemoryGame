@@ -4,14 +4,17 @@ import { useNavigate } from "react-router-dom";
 import { StartMenuStyle } from "./StartMenu.style";
 import Button from "../Button";
 import { DiscThemeEnum, GridSizeEnum, PlayerNumberType } from "../../utils/game";
-import AppContext, { withContextProvider } from "../../AppContext";
+import AppContext from "../../AppContext";
 
-const StartMenu: React.FC = withContextProvider(() => {
+const StartMenu: React.FC = () => {
   const { gameOptions, setGameOptions, discTheme, setDiscTheme } = useContext(AppContext);
   const navigate = useNavigate();
 
   const updatePlayerNumber = (number: PlayerNumberType) => () => {
+    console.log('From method: ', number);
     setGameOptions({ ...gameOptions, playersNumber: number });
+
+    console.log('From method: ', number, gameOptions.playersNumber);
   };
 
   const updateGridSize = (size: GridSizeEnum) => () => {
@@ -106,6 +109,6 @@ const StartMenu: React.FC = withContextProvider(() => {
       />
     </StartMenuStyle>
   );
-});
+};
 
 export default StartMenu;

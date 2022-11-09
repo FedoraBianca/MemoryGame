@@ -1,18 +1,22 @@
 import Header from "../../components/Header";
 import Disc from "../../components/Disc";
 import { BoardStyle, GamePageStyles } from "./GamePage.style";
-import AppContext, { withContextProvider } from "../../AppContext";
-import { useContext } from "react";
+import AppContext from "../../AppContext";
+import { useContext, useEffect } from "react";
 
 const gameSize = 6;
 const boardArray = Array.from(Array(gameSize * gameSize).keys());
 
 
 
-const GamePage: React.FC = withContextProvider(() => {
-  const { discTheme } = useContext(AppContext);
+const GamePage: React.FC = () => {
+  const { discTheme, gameOptions } = useContext(AppContext);
 
-  console.log('From global state: ', discTheme);
+  useEffect(() => {
+    console.log('From global state: ', discTheme, gameOptions);
+  });
+
+
   return (
     <GamePageStyles>
       <Header />
@@ -37,6 +41,6 @@ const GamePage: React.FC = withContextProvider(() => {
       </div>
     </GamePageStyles>
   );
-});
+};
 
 export default GamePage;
