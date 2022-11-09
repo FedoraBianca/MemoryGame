@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { theme } from "../../styles/Theme.style";
 
 export const HomePageStyle = styled.div`
   display: flex;
@@ -7,6 +8,7 @@ export const HomePageStyle = styled.div`
   height: 100%;
   width: 100%;
   padding: 0 24px;
+  background-color: ${theme.colors.black};
 
   @media (min-width: 768px) {
     padding: 0 56px;

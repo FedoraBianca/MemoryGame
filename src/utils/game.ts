@@ -99,6 +99,10 @@ export class Game {
     };
 
     this._lastDiscIndex = index;
+
+    if (this.allDiscsAreFliped()) {
+      this._winner = this._currentTurn;
+    }
   };
 
   updatePlayersTurn() {

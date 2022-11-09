@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import Heading from "../Heading";
 import { useNavigate } from "react-router-dom";
 import { StartMenuStyle } from "./StartMenu.style";
 import Button from "../Button";
-import { DiscThemeEnum, GridSizeEnum, IGameOptions, PlayerNumberType } from "../../utils/game";
+import { DiscThemeEnum, GridSizeEnum, PlayerNumberType } from "../../utils/game";
+import AppContext, { withContextProvider } from "../../AppContext";
 
-const StartMenu: React.FC = () => {
-  const [gameOptions, setGameOptions] = useState<IGameOptions>({ gridSize: GridSizeEnum.small, playersNumber: 1 });
-  const [discTheme, setDiscTheme] = useState<DiscThemeEnum>(DiscThemeEnum.numbers);
+const StartMenu: React.FC = withContextProvider(() => {
+  const { gameOptions, setGameOptions, discTheme, setDiscTheme } = useContext(AppContext);
   const navigate = useNavigate();
 
   const updatePlayerNumber = (number: PlayerNumberType) => () => {
@@ -106,6 +106,6 @@ const StartMenu: React.FC = () => {
       />
     </StartMenuStyle>
   );
-};
+});
 
 export default StartMenu;
