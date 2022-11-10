@@ -1,43 +1,57 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
+import AppContext from "../../AppContext";
+import { theme } from "../../styles/Theme.style";
+import { DiscThemeEnum, IDisc } from "../../utils/game";
 import Icon from "../Icon";
 import { DiscStyle } from "./Disc.style";
 
 export interface IDiscProps {
-  type: "number" | "icon";
   onClick: (e: React.MouseEvent) => void;
-  flipped: boolean;
-  matched: boolean;
+  disc: IDisc;
 }
 
 const Disc: React.FC<IDiscProps> = ({
-  type = "number",
   onClick,
-  flipped = false,
-  matched = false,
+  disc
 }) => {
-  if (type === "number") {
-    return (
-      <DiscStyle
-        onClick={onClick}
-        flipped={flipped}
-        matched={matched}
-        className="disc-content"
-      >
-        <span>2</span>
-      </DiscStyle>
-    );
-  } else {
-    return (
-      <DiscStyle onClick={onClick} flipped={flipped} matched={matched}>
-        <Icon
-          icon="camera"
-          color="#111517"
-          size="60px"
-          className="disc-content"
-        />
-      </DiscStyle>
-    );
-  }
+  const { discTheme } = useContext(AppContext);
+  const iconList: string[] = ['camera', 'headphones', 'music', 'pacman', 'spades', 'clubs', 'binoculars', 'lock', 'lock', 'bug', 'trophy', 'gift', 'mug', 'airplane', 'power', 'attachment', 'sun', 'star-full', 'heart'];
+  const [styleClass, setStypeClass] = useState('');
+
+  useEffect(() => {
+    let className = '';
+    if (disc.flipped) {
+      className = className + ' flipped';
+    }
+
+    if (disc.selected) {
+      className = className + ' selected';
+    }
+
+    setStypeClass(className);
+  }, [disc.flipped, disc.selected]);
+
+  const handleClick = (e: React.MouseEvent) => {
+    onClick(e);
+  };
+
+  return (
+    <DiscStyle
+      onClick={handleClick}
+      className={styleClass}
+    >
+      <div className='content'>
+        {discTheme === DiscThemeEnum.numbers && <span>{disc.value}</span>}
+        {discTheme === DiscThemeEnum.icons &&
+          <Icon
+            icon={iconList[disc.value - 1]}
+            size='36px'
+            color={theme.colors.lightWhite}
+          />
+        }
+      </div>
+    </DiscStyle>
+  );
 };
 
 export default Disc;

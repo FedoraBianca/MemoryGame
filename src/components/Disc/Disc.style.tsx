@@ -1,37 +1,32 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { theme } from "../../styles/Theme.style";
 
-export interface IDiscWrapper {
-  flipped: boolean;
-  matched: boolean;
-}
-
-export const DiscStyle = styled.div<IDiscWrapper>`
+export const DiscStyle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   max-width: 80px;
   max-height: 80px;
   color: ${theme.colors.lightWhite};
-  background-color: ${(prop) =>
-    prop.matched
-      ? theme.colors.orange
-      : prop.flipped
-      ? theme.colors.lightBlue
-      : theme.colors.charcoal};
+  background-color: ${theme.colors.charcoal};
+  font-size: 56px;
   border-radius: 50%;
   cursor: pointer;
 
-  :hover {
-    background-color: ${(prop) =>
-      prop.matched
-        ? theme.colors.orange
-        : prop.flipped
-        ? theme.colors.lightBlue
-        : theme.colors.blue};
+  .content {
+    visibility: hidden;
   }
 
-  .disc-content {
-    display: ${(prop) => (prop.flipped ? "flex" : "none")};
+  &.flipped {
+    background-color: ${theme.colors.lightBlue};
+    cursor: default;
+
+    .content {
+      visibility: visible;
+    }
+  }
+
+  &.selected {
+    background-color: ${theme.colors.orange};
   }
 `;
