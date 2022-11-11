@@ -11,10 +11,7 @@ const StartMenu: React.FC = () => {
   const navigate = useNavigate();
 
   const updatePlayerNumber = (number: PlayerNumberType) => () => {
-    console.log('From method: ', number);
     setGameOptions({ ...gameOptions, playersNumber: number });
-
-    console.log('From method: ', number, gameOptions.playersNumber);
   };
 
   const updateGridSize = (size: GridSizeEnum) => () => {

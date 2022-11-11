@@ -2,43 +2,44 @@ import Header from "../../components/Header";
 import Disc from "../../components/Disc";
 import { BoardStyle, GamePageStyles } from "./GamePage.style";
 import AppContext from "../../AppContext";
-import { useContext, useEffect } from "react";
-
-const gameSize = 6;
-const boardArray = Array.from(Array(gameSize * gameSize).keys());
-
-
+import { useContext, useEffect, useState } from "react";
+import { Game, getRandomInt, GridSizeEnum, IDisc } from "../../utils/game";
 
 const GamePage: React.FC = () => {
-  const { discTheme, gameOptions } = useContext(AppContext);
+  const { gameOptions, game, setGame } = useContext(AppContext);
+  const [updateKey, setUpdateKey] = useState(getRandomInt(1, 100));
 
   useEffect(() => {
-    console.log('From global state: ', discTheme, gameOptions);
-  });
+    setGame(new Game(gameOptions));
+  }, []);
 
+  const handleDiscClick = (index: number) => {
+    setUpdateKey(getRandomInt(2 * updateKey, 3 * updateKey));
+    game?.flipDisc(index);
+  };
 
   return (
     <GamePageStyles>
       <Header />
-      <BoardStyle boardSize={6}>
-        {boardArray.map((disc, i) => {
+      <BoardStyle boardSize={gameOptions.gridSize === GridSizeEnum.small ? 4 : 6}>
+        {game && game.grid.map((disc: IDisc, index) => {
           return (
             <Disc
-              type="icon"
-              onClick={() => { }}
-              flipped={false}
-              matched={false}
-              key={i}
+              onClick={() => handleDiscClick(index)}
+              disc={game.grid[index]}
+              key={index}
             ></Disc>
           );
         })}
       </BoardStyle>
       <div className="Footer">
-        <div>player1</div>
-        <div>player2</div>
-        <div>player3</div>
-        <div>player4</div>
+        <div>Current turn: {game?.currentTurn}</div>
+        <div>player1 {game?.score[0]}</div>
+        <div>player2 {game?.score[1]}</div>
+        <div>player3 {game?.score[2]}</div>
+        <div>player4 {game?.score[3]}</div>
       </div>
+
     </GamePageStyles>
   );
 };
