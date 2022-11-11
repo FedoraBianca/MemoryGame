@@ -20,7 +20,6 @@ const GamePage: React.FC = () => {
     game,
     setGame,
     gameOptions,
-    currentGame,
     movesNumber,
     mobileModalShow,
     setMobileModalShow,
@@ -48,20 +47,18 @@ const GamePage: React.FC = () => {
       </div>
     );
   } else {
-    console.log("currentGame.score ", currentGame);
+    console.log("game ", game);
     playerStats = (
       <div className="footer">
         {arrayOfPlayers.map((player, i) => (
           <div className="player-card__wrapper">
             <PlayerCard
-              score={currentGame?.score[i]}
-              currentTurn={
-                currentGame?.currentTurn === player + 1 ? true : false
-              }
+              score={game?.score[i]}
+              currentTurn={game?.currentTurn === player + 1 ? true : false}
               index={player}
               key={player}
             />
-            {currentGame?.currentTurn === player + 1 ? (
+            {game?.currentTurn === player + 1 ? (
               <span className="current-turn--label">CURRENT TURN</span>
             ) : (
               <></>
@@ -104,13 +101,6 @@ const GamePage: React.FC = () => {
           })}
       </BoardStyle>
       {playerStats}
-      <div className="Footer">
-        <div>Current turn: {game?.currentTurn}</div>
-        <div>player1 {game?.score[0]}</div>
-        <div>player2 {game?.score[1]}</div>
-        <div>player3 {game?.score[2]}</div>
-        <div>player4 {game?.score[3]}</div>
-      </div>
       <MeniuModal isVisible={mobileModalShow} />
     </GamePageStyles>
   );
