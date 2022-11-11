@@ -7,9 +7,9 @@ import React, {
 } from "react";
 import {
   DiscThemeEnum,
+  Game,
   GridSizeEnum,
   IGameOptions,
-  Game,
   PlayerNumberType,
 } from "./utils/game";
 
@@ -32,6 +32,8 @@ type TAppContext = {
   setMobileModalShow: Function;
   timer: number;
   setTimer: Function;
+  game: Game | null;
+  setGame: Function;
 };
 
 type HOC = (Component: any) => React.FC<PropsWithChildren>;
@@ -60,6 +62,7 @@ const withContextProvider: HOC = (Component) => {
       score: initialScore,
     });
     const [discTheme, setDiscTheme] = useState(DiscThemeEnum.numbers);
+    const [game, setGame] = useState<Game | null>(null);
     const [currentPlayer, setCurrentPlayer] = useState<
       PlayerNumberType | undefined
     >();
@@ -122,6 +125,8 @@ const withContextProvider: HOC = (Component) => {
       setGameOptions,
       discTheme,
       setDiscTheme,
+      game,
+      setGame
       currentPlayer,
       setCurrentPlayer,
       currentGame,

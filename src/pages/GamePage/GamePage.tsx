@@ -10,12 +10,14 @@ import {
   Modal,
   MobileMenu,
 } from "../../components";
+import { Game, getRandomInt, GridSizeEnum, IDisc } from "../../utils/game";
 
 const gameSize = 6;
 const boardArray = Array.from(Array(gameSize * gameSize).keys());
 
 const GamePage: React.FC = () => {
   const {
+    game, setGame
     discTheme,
     gameOptions,
     setGameOptions,
@@ -26,6 +28,7 @@ const GamePage: React.FC = () => {
     mobileModalShow,
     setMobileModalShow,
   } = useContext(AppContext);
+  const [updateKey, setUpdateKey] = useState(getRandomInt(1, 100));
   const arrayOfPlayers = Array.from(Array(gameOptions.playersNumber).keys());
 
   const MeniuModal = (props: any) => {
@@ -78,32 +81,50 @@ const GamePage: React.FC = () => {
 
   useEffect(() => {
     console.log("From global state: ", discTheme, gameOptions);
-    console.log("arrayOfPlayers", arrayOfPlayers);
   });
+  useEffect(() => {
+    setGame(new Game(gameOptions));
+  }, []);
 
   const handleOnMenuClick = () => {
     console.log("handleOnMenuClick");
     setMobileModalShow(true);
   };
 
+  const handleOnMenuClick = () => {
+    console.log("handleOnMenuClick");
+    setMobileModalShow(true);
+  };
+  const handleDiscClick = (index: number) => {
+    setUpdateKey(getRandomInt(2 * updateKey, 3 * updateKey));
+    game?.flipDisc(index);
+  };
+
   return (
     <GamePageStyles>
       <Header handleClick={handleOnMenuClick} />
-      <BoardStyle boardSize={6}>
-        {boardArray.map((disc, i) => {
+      <BoardStyle boardSize={gameOptions.gridSize === GridSizeEnum.small ? 4 : 6}>
+        {game && game.grid.map((disc: IDisc, index) => {
           return (
             <Disc
+              onClick={() => handleDiscClick(index)}
+              disc={game.grid[index]}
+              key={index}
               type="icon"
-              onClick={() => {}}
-              flipped={false}
-              matched={false}
-              key={i}
             ></Disc>
           );
         })}
       </BoardStyle>
       {playerStats}
+      <div className="Footer">
+        <div>Current turn: {game?.currentTurn}</div>
+        <div>player1 {game?.score[0]}</div>
+        <div>player2 {game?.score[1]}</div>
+        <div>player3 {game?.score[2]}</div>
+        <div>player4 {game?.score[3]}</div>
+      </div>
       <MeniuModal isVisible={mobileModalShow} />
+
     </GamePageStyles>
   );
 };
