@@ -9,3 +9,5 @@ export { default as StartMenu } from "./StartMenu";
 export { default as MovesCard } from "./MovesCard";
 export { default as TimerCard } from "./TimerCard";
 export { default as MobileMenu } from "./MobileMenu";
+export { default as PlayerCard } from "./PlayerCard";
+export { default as Disc } from "./Disc";

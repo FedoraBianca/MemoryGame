@@ -5,8 +5,13 @@ import Button from "../Button";
 import { HeaderStyles } from "./Header.style";
 import { theme } from "../../styles/Theme.style";
 import { useNavigate } from "react-router-dom";
+import { ProgressPlugin } from "webpack";
 
-const Header: React.FC = () => {
+export interface IHeader {
+  handleClick: (e: React.MouseEvent) => void;
+}
+
+const Header: React.FC<IHeader> = ({ handleClick }) => {
   const navigate = useNavigate();
 
   const handleNewGame = () => {
@@ -30,7 +35,7 @@ const Header: React.FC = () => {
       <Button
         type="S"
         color={theme.colors.orange}
-        onClick={() => {}}
+        onClick={handleClick}
         btnText="Menu"
         className="header-btn--mobile"
       />

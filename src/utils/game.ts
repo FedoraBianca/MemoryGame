@@ -1,12 +1,12 @@
 export enum GridSizeEnum {
   small,
-  large
-};
+  large,
+}
 
 export enum DiscThemeEnum {
   numbers,
-  icons
-};
+  icons,
+}
 
 export type PlayerNumberType = 1 | 2 | 3 | 4;
 
@@ -24,6 +24,7 @@ export interface IDisc {
 export interface IGameOptions {
   gridSize: GridSizeEnum;
   playersNumber: PlayerNumberType;
+  score: number[];
 }
 
 export class Game {
@@ -40,21 +41,31 @@ export class Game {
   constructor(options: IGameOptions) {
     this._gridSize = options.gridSize;
     this._playersNumber = options.playersNumber;
-    let values: number[] = options.gridSize === GridSizeEnum.small ?
-    [ ...Array.from({length: 8},(_,i)=>i + 1), ...Array.from({length: 8},(e,i)=>i + 1)] :
-      [...Array.from({ length: 18 }, (_, i) => i + 1), ...Array.from({ length: 18 }, (e, i) => i + 1)];
+    let values: number[] =
+      options.gridSize === GridSizeEnum.small
+        ? [
+            ...Array.from({ length: 8 }, (_, i) => i + 1),
+            ...Array.from({ length: 8 }, (e, i) => i + 1),
+          ]
+        : [
+            ...Array.from({ length: 18 }, (_, i) => i + 1),
+            ...Array.from({ length: 18 }, (e, i) => i + 1),
+          ];
     shuffleArray(values);
-    values.map((value: number, index: number) => this._grid[index] = { value, flipped: false });
+    values.map(
+      (value: number, index: number) =>
+        (this._grid[index] = { value, flipped: false })
+    );
     this._score = Array(this._playersNumber).fill(0);
-  };
+  }
 
   public get grid() {
     return this._grid;
-  };
-  
+  }
+
   public get movesNumber() {
     return this._discFlips / 2;
-  };
+  }
 
   // public get state() {
   //   return this._state;
@@ -62,7 +73,11 @@ export class Game {
 
   public get winner() {
     return this._winner;
-  };
+  }
+
+  public get score() {
+    return this._score;
+  }
 
   public get currentTurn() {
     return this._currentTurn;
@@ -78,7 +93,7 @@ export class Game {
 
   flipDisc = (index: number) => {
     this._grid[index] = { ...this._grid[index], flipped: true };
-    
+
     this._discFlips++;
     // If discFlips is an even number that means we should check if the disks match and also update currentTurn
     if (this._discFlips % 2 === 0) {
@@ -88,15 +103,18 @@ export class Game {
 
       if (this._lastDiscIndex) {
         // If the disks mactch they will remain flipped and the score is updated
-        if (this._grid[this._lastDiscIndex] !== this._grid[index]) { 
+        if (this._grid[this._lastDiscIndex] !== this._grid[index]) {
           this._score[this._currentTurn - 1]++;
         } else {
           // otherwise they will hide the content again
           this._grid[index] = { ...this._grid[index], flipped: false };
-          this._grid[this._lastDiscIndex] = { ...this._grid[this._lastDiscIndex], flipped: false };
+          this._grid[this._lastDiscIndex] = {
+            ...this._grid[this._lastDiscIndex],
+            flipped: false,
+          };
         }
       }
-    };
+    }
 
     this._lastDiscIndex = index;
 
@@ -126,8 +144,8 @@ export class Game {
 
 function shuffleArray(array: number[]): number[] {
   for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
   }
 
   return array;

@@ -4,7 +4,7 @@ import Heading from "../Heading";
 import { MovesCardWrapper } from "./MovesCard.style";
 
 export interface IMovesCard {
-  movesNumber: number;
+  movesNumber: number | undefined;
   className?: string;
 }
 
@@ -17,7 +17,12 @@ const MovesCard: React.FC<IMovesCard> = ({ movesNumber, className = "" }) => {
         children="Moves"
         className="label"
       />
-      <Heading size="M" color={theme.colors.charcoal} children={movesNumber} />
+      <Heading
+        size="M"
+        color={theme.colors.charcoal}
+        children={movesNumber}
+        className="value"
+      />
     </MovesCardWrapper>
   );
 };
