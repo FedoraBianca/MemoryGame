@@ -126,7 +126,7 @@ const withContextProvider: HOC = (Component) => {
       discTheme,
       setDiscTheme,
       game,
-      setGame
+      setGame,
       currentPlayer,
       setCurrentPlayer,
       currentGame,

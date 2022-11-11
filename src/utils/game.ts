@@ -19,6 +19,7 @@ export interface IDisc {
 export interface IGameOptions {
   gridSize: GridSizeEnum;
   playersNumber: PlayerNumberType;
+  score: number[];
 }
 
 export class Game {

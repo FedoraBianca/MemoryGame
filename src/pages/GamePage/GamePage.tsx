@@ -17,12 +17,9 @@ const boardArray = Array.from(Array(gameSize * gameSize).keys());
 
 const GamePage: React.FC = () => {
   const {
-    game, setGame
-    discTheme,
+    game,
+    setGame,
     gameOptions,
-    setGameOptions,
-    currentPlayer,
-    score,
     currentGame,
     movesNumber,
     mobileModalShow,
@@ -75,13 +72,6 @@ const GamePage: React.FC = () => {
     );
   }
 
-  // const handleDiscClick = () => {
-  //   setGameOptions({ ...gameOptions, discFlips: gameOptions.discFlips + 1 });
-  // };
-
-  useEffect(() => {
-    console.log("From global state: ", discTheme, gameOptions);
-  });
   useEffect(() => {
     setGame(new Game(gameOptions));
   }, []);
@@ -91,10 +81,6 @@ const GamePage: React.FC = () => {
     setMobileModalShow(true);
   };
 
-  const handleOnMenuClick = () => {
-    console.log("handleOnMenuClick");
-    setMobileModalShow(true);
-  };
   const handleDiscClick = (index: number) => {
     setUpdateKey(getRandomInt(2 * updateKey, 3 * updateKey));
     game?.flipDisc(index);
@@ -103,17 +89,19 @@ const GamePage: React.FC = () => {
   return (
     <GamePageStyles>
       <Header handleClick={handleOnMenuClick} />
-      <BoardStyle boardSize={gameOptions.gridSize === GridSizeEnum.small ? 4 : 6}>
-        {game && game.grid.map((disc: IDisc, index) => {
-          return (
-            <Disc
-              onClick={() => handleDiscClick(index)}
-              disc={game.grid[index]}
-              key={index}
-              type="icon"
-            ></Disc>
-          );
-        })}
+      <BoardStyle
+        boardSize={gameOptions.gridSize === GridSizeEnum.small ? 4 : 6}
+      >
+        {game &&
+          game.grid.map((disc: IDisc, index) => {
+            return (
+              <Disc
+                onClick={() => handleDiscClick(index)}
+                disc={game.grid[index]}
+                key={index}
+              ></Disc>
+            );
+          })}
       </BoardStyle>
       {playerStats}
       <div className="Footer">
@@ -124,7 +112,6 @@ const GamePage: React.FC = () => {
         <div>player4 {game?.score[3]}</div>
       </div>
       <MeniuModal isVisible={mobileModalShow} />
-
     </GamePageStyles>
   );
 };
