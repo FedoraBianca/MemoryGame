@@ -27,7 +27,7 @@ export const HomePageStyle = styled.div`
   .logo__component {
     height: auto;
     margin-bottom: 46px;
-    text-align: center;
+    justify-content: center;
   }
 
   @media (min-width: 768px) {

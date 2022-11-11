@@ -3,11 +3,22 @@ import Heading from "../Heading";
 import { useNavigate } from "react-router-dom";
 import { StartMenuStyle } from "./StartMenu.style";
 import Button from "../Button";
-import { DiscThemeEnum, GridSizeEnum, PlayerNumberType } from "../../utils/game";
+import {
+  DiscThemeEnum,
+  GridSizeEnum,
+  PlayerNumberType,
+} from "../../utils/game";
 import AppContext from "../../AppContext";
 
 const StartMenu: React.FC = () => {
-  const { gameOptions, setGameOptions, discTheme, setDiscTheme } = useContext(AppContext);
+  const {
+    gameOptions,
+    setGameOptions,
+    discTheme,
+    setDiscTheme,
+    newGame,
+    setScore,
+  } = useContext(AppContext);
   const navigate = useNavigate();
 
   const updatePlayerNumber = (number: PlayerNumberType) => () => {
@@ -16,10 +27,12 @@ const StartMenu: React.FC = () => {
 
   const updateGridSize = (size: GridSizeEnum) => () => {
     setGameOptions({ ...gameOptions, gridSize: size });
-  }
+  };
 
   const handleStartGame = () => {
     navigate(`/game`);
+    newGame(gameOptions.playersNumber);
+    setScore(Array(gameOptions.playersNumber).fill(0));
   };
 
   return (
