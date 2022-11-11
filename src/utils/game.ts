@@ -20,6 +20,7 @@ export interface IGameOptions {
   gridSize: GridSizeEnum;
   playersNumber: PlayerNumberType;
   score: number[];
+  discTheme: DiscThemeEnum;
 }
 
 export class Game {

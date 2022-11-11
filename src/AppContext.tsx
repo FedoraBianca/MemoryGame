@@ -20,8 +20,6 @@ type TAppContext = {
   setDiscTheme: Function;
   currentPlayer: PlayerNumberType | undefined;
   setCurrentPlayer: Function;
-  currentGame: Game | undefined;
-  setCurrentGame: Function;
   newGame: Function;
   restartGame: Function;
   score: number[];
@@ -43,36 +41,38 @@ const AppContext = createContext({} as TAppContext);
 const withContextProvider: HOC = (Component) => {
   return (props) => {
     debugger;
-    const playersNr = localStorage.getItem("currentGame");
+    const playersNr = localStorage.getItem("game");
+    const gameTheme = localStorage.getItem("gameTheme");
     let initialPlayersNr;
     let initialScore;
+    let initialTheme: any;
 
-    if (playersNr !== "undefined" && playersNr) {
-      debugger;
+    if (playersNr) {
       initialPlayersNr = JSON.parse(playersNr)._playersNumber;
       initialScore = JSON.parse(playersNr)._score;
     } else {
-      debugger;
       initialPlayersNr = 1;
+    }
+
+    if (gameTheme) {
+      debugger;
+      initialTheme = JSON.parse(gameTheme);
+    } else {
+      initialTheme = DiscThemeEnum.numbers;
     }
 
     const [gameOptions, setGameOptions] = useState<IGameOptions>({
       gridSize: GridSizeEnum.small,
       playersNumber: initialPlayersNr,
       score: initialScore,
+      discTheme: initialTheme,
     });
-    const [discTheme, setDiscTheme] = useState(DiscThemeEnum.numbers);
+    const [discTheme, setDiscTheme] = useState(initialTheme);
     const [game, setGame] = useState<Game | null>(null);
     const [currentPlayer, setCurrentPlayer] = useState<
       PlayerNumberType | undefined
     >();
-    const [currentGame, setCurrentGame] = useState<Game>(
-      new Game({
-        gridSize: GridSizeEnum.small,
-        playersNumber: initialPlayersNr,
-        score: initialScore,
-      })
-    );
+
     const [winner, setWinner] = useState<string>();
     const [ended, setEnded] = useState(false);
     const [timer, setTimer] = useState<number>(0);
@@ -81,21 +81,28 @@ const withContextProvider: HOC = (Component) => {
     const [mobileModalShow, setMobileModalShow] = useState(false);
 
     useEffect(() => {
+      if (game !== null) {
+        localStorage.setItem("game", JSON.stringify(game));
+      }
+    }, [game]);
+
+    useEffect(() => {
       debugger;
-      localStorage.setItem("currentGame", JSON.stringify(currentGame));
-    }, [currentGame]);
+      localStorage.setItem("gameTheme", JSON.stringify(discTheme));
+    }, [discTheme]);
 
     const resetTimer = useCallback(() => {
       setTimer(0);
     }, []);
 
     const newGame = useCallback(
-      (p: PlayerNumberType) => {
-        setCurrentGame(
+      (p: PlayerNumberType, theme: DiscThemeEnum) => {
+        setGame(
           new Game({
             gridSize: GridSizeEnum.small,
             playersNumber: p,
             score: [],
+            discTheme: initialTheme,
           })
         );
         setCurrentPlayer(1);
@@ -108,17 +115,18 @@ const withContextProvider: HOC = (Component) => {
     );
 
     const restartGame = useCallback(() => {
-      setCurrentGame(
+      setGame(
         new Game({
           gridSize: GridSizeEnum.small,
           playersNumber: 1,
           score: [],
+          discTheme: initialTheme,
         })
       );
       setWinner(undefined);
       setEnded(false);
       resetTimer();
-    }, [currentGame, resetTimer]);
+    }, [game, resetTimer]);
 
     const context: TAppContext = {
       gameOptions,
@@ -129,8 +137,6 @@ const withContextProvider: HOC = (Component) => {
       setGame,
       currentPlayer,
       setCurrentPlayer,
-      currentGame,
-      setCurrentGame,
       newGame,
       restartGame,
       score,

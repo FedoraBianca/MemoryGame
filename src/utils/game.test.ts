@@ -1,4 +1,4 @@
-import { Game, GridSizeEnum } from "./game";
+import { Game, GridSizeEnum, DiscThemeEnum } from "./game";
 
 test("The grid is initialized properly for the 4x4 size", () => {
   // arrange
@@ -6,6 +6,7 @@ test("The grid is initialized properly for the 4x4 size", () => {
     gridSize: GridSizeEnum.small,
     playersNumber: 1,
     score: [0],
+    discTheme: DiscThemeEnum.numbers,
   });
 
   // assert
@@ -18,6 +19,7 @@ test("The grid is initialized properly for the 6x6 size", () => {
     gridSize: GridSizeEnum.large,
     playersNumber: 1,
     score: [0],
+    discTheme: DiscThemeEnum.numbers,
   });
 
   // assert
@@ -30,6 +32,7 @@ test("When the game starts, player 1 is first", () => {
     gridSize: GridSizeEnum.large,
     playersNumber: 2,
     score: [0, 0],
+    discTheme: DiscThemeEnum.numbers,
   });
   // assert
   expect(game.currentTurn).toBe(1);
