@@ -40,7 +40,6 @@ const AppContext = createContext({} as TAppContext);
 
 const withContextProvider: HOC = (Component) => {
   return (props) => {
-    debugger;
     const playersNr = localStorage.getItem("game");
     const gameTheme = localStorage.getItem("gameTheme");
     let initialPlayersNr;
@@ -55,7 +54,6 @@ const withContextProvider: HOC = (Component) => {
     }
 
     if (gameTheme) {
-      debugger;
       initialTheme = JSON.parse(gameTheme);
     } else {
       initialTheme = DiscThemeEnum.numbers;
@@ -87,7 +85,6 @@ const withContextProvider: HOC = (Component) => {
     }, [game]);
 
     useEffect(() => {
-      debugger;
       localStorage.setItem("gameTheme", JSON.stringify(discTheme));
     }, [discTheme]);
 

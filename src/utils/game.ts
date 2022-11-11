@@ -53,6 +53,7 @@ export class Game {
         (this._grid[index] = { value, flipped: false, selected: false })
     );
     this._score = Array(this._playersNumber).fill(0);
+    console.log("grid in constructor: ", this.grid);
   }
 
   public get grid() {
@@ -60,7 +61,7 @@ export class Game {
   }
 
   public get movesNumber() {
-    return this._discFlips / 2;
+    return Math.floor(this._discFlips / 2);
   }
 
   public get discFlips() {
@@ -85,6 +86,7 @@ export class Game {
 
   flipDisc = (index: number) => {
     // If the disc is already flipped or the assessment is in progress we don't do anything
+    console.log("grid in flipDisc method", this.grid);
     if (this.grid[index].flipped !== true || !this._assesmentInProgress) {
       this._discSelection.push(index);
       this._grid[index] = {
@@ -92,12 +94,13 @@ export class Game {
         flipped: true,
         selected: true,
       };
+      this._discFlips++;
       if (this._discSelection.length === 2) {
         setTimeout(() => {
           this.assesDiscSelection();
           this._assesmentInProgress = false;
           this.updatePlayersTurn();
-        }, 500);
+        }, 100);
       }
     }
   };
@@ -120,7 +123,7 @@ export class Game {
         flipped: false,
       };
       this._grid[this.discSelection[1]] = {
-        ...this._grid[this.discSelection[0]],
+        ...this._grid[this.discSelection[1]],
         selected: false,
         flipped: false,
       };
