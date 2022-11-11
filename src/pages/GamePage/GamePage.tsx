@@ -23,6 +23,7 @@ const GamePage: React.FC = () => {
     movesNumber,
     mobileModalShow,
     setMobileModalShow,
+    setMovesNumber,
   } = useContext(AppContext);
   const [updateKey, setUpdateKey] = useState(getRandomInt(1, 100));
   const arrayOfPlayers = Array.from(Array(gameOptions.playersNumber).keys());
@@ -81,6 +82,9 @@ const GamePage: React.FC = () => {
   const handleDiscClick = (index: number) => {
     setUpdateKey(getRandomInt(2 * updateKey, 3 * updateKey));
     game?.flipDisc(index);
+    console.log("game?.movesNumber ", game?.movesNumber);
+    console.log("game?.discFlips ", game?.discFlips);
+    setMovesNumber(game?.movesNumber);
   };
 
   return (
