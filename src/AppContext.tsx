@@ -18,20 +18,29 @@ type TAppContext = {
   setGameOptions: Function;
   discTheme: DiscThemeEnum;
   setDiscTheme: Function;
-  currentPlayer: PlayerNumberType | undefined;
-  setCurrentPlayer: Function;
+  currentTurn: PlayerNumberType | undefined;
+  setCurrentTurn: Function;
   newGame: Function;
   restartGame: Function;
-  score: number[];
+  score: number[] | undefined;
   setScore: Function;
   movesNumber: number;
   setMovesNumber: Function;
   mobileModalShow: boolean;
   setMobileModalShow: Function;
-  timer: number;
-  setTimer: Function;
   game: Game | null;
   setGame: Function;
+  endGame: Function;
+  setWinner: Function;
+  showWinnersBoard: boolean;
+  setShowWinnersBoard: Function;
+  minutes: number;
+  seconds: number;
+  setMinutes: Function;
+  setSeconds: Function;
+  gridSize: GridSizeEnum;
+  timerInited: boolean;
+  setTimerInited: Function;
 };
 
 type HOC = (Component: any) => React.FC<PropsWithChildren>;
@@ -39,18 +48,23 @@ type HOC = (Component: any) => React.FC<PropsWithChildren>;
 const AppContext = createContext({} as TAppContext);
 
 const withContextProvider: HOC = (Component) => {
-  return (props) => {
-    const playersNr = localStorage.getItem("game");
-    const gameTheme = localStorage.getItem("gameTheme");
-    let initialPlayersNr;
-    let initialScore;
-    let initialTheme: any;
+  return () => {
+    const pvpScore = localStorage.getItem("pvpScore");
+    const initialScore = pvpScore ? JSON.parse(pvpScore) : [0, 0, 0, 0];
 
-    if (playersNr) {
-      initialPlayersNr = JSON.parse(playersNr)._playersNumber;
-      initialScore = JSON.parse(playersNr)._score;
+    const gameItem = localStorage.getItem("game");
+    const gameTheme = localStorage.getItem("gameTheme");
+
+    let initialPlayersNr;
+    let initialTheme: any;
+    let gridSize;
+
+    if (gameItem) {
+      initialPlayersNr = JSON.parse(gameItem)._playersNumber;
+      gridSize = JSON.parse(gameItem)._gridSize;
     } else {
       initialPlayersNr = 1;
+      gridSize = GridSizeEnum.small;
     }
 
     if (gameTheme) {
@@ -59,24 +73,41 @@ const withContextProvider: HOC = (Component) => {
       initialTheme = DiscThemeEnum.numbers;
     }
 
+    const [game, setGame] = useState<Game | null>(null);
+    const [score, setScore] = useState<number[] | undefined>(initialScore);
     const [gameOptions, setGameOptions] = useState<IGameOptions>({
-      gridSize: GridSizeEnum.small,
+      gridSize: gridSize,
       playersNumber: initialPlayersNr,
-      score: initialScore,
       discTheme: initialTheme,
+      moves: 0,
     });
     const [discTheme, setDiscTheme] = useState(initialTheme);
-    const [game, setGame] = useState<Game | null>(null);
-    const [currentPlayer, setCurrentPlayer] = useState<
+    const [currentTurn, setCurrentTurn] = useState<
       PlayerNumberType | undefined
     >();
 
-    const [winner, setWinner] = useState<string>();
+    const [winner, setWinner] = useState<number | undefined>(undefined);
     const [ended, setEnded] = useState(false);
-    const [timer, setTimer] = useState<number>(0);
-    const [score, setScore] = useState<number[]>([]);
+    const [timerInited, setTimerInited] = useState(false);
+    const [minutes, setMinutes] = useState<number>(0);
+    const [seconds, setSeconds] = useState<number>(0);
     const [movesNumber, setMovesNumber] = useState<number>(0);
     const [mobileModalShow, setMobileModalShow] = useState(false);
+    const [showWinnersBoard, setShowWinnersBoard] = useState(false);
+
+    useEffect(() => {
+      if (timerInited) {
+        const myInterval = setInterval(() => {
+          if (seconds !== 0 && seconds % 59 === 0) {
+            setMinutes(minutes + 1);
+            setSeconds(0);
+          } else {
+            setSeconds(seconds + 1);
+          }
+        }, 1000);
+        return () => clearInterval(myInterval);
+      }
+    }, [setMinutes, setSeconds, minutes, seconds, timerInited]);
 
     useEffect(() => {
       if (game !== null) {
@@ -88,42 +119,38 @@ const withContextProvider: HOC = (Component) => {
       localStorage.setItem("gameTheme", JSON.stringify(discTheme));
     }, [discTheme]);
 
+    useEffect(() => {
+      localStorage.setItem("pvpScore", JSON.stringify(score));
+    }, [score]);
+
     const resetTimer = useCallback(() => {
-      setTimer(0);
+      setSeconds(0);
+      setMinutes(0);
     }, []);
 
-    const newGame = useCallback(
-      (p: PlayerNumberType, theme: DiscThemeEnum) => {
-        setGame(
-          new Game({
-            gridSize: GridSizeEnum.small,
-            playersNumber: p,
-            score: [],
-            discTheme: initialTheme,
-          })
-        );
-        setCurrentPlayer(1);
-        setMovesNumber(0);
-        setWinner(undefined);
-        setEnded(false);
-        resetTimer();
-      },
-      [resetTimer]
-    );
-
-    const restartGame = useCallback(() => {
-      setGame(
-        new Game({
-          gridSize: GridSizeEnum.small,
-          playersNumber: 1,
-          score: [],
-          discTheme: initialTheme,
-        })
-      );
+    const newGame = useCallback(() => {
+      setGame(new Game(gameOptions));
+      setCurrentTurn(1);
+      setScore(Array.from(Array(gameOptions.playersNumber).fill(0)));
+      setMovesNumber(0);
       setWinner(undefined);
       setEnded(false);
       resetTimer();
-    }, [game, resetTimer]);
+    }, [resetTimer, setGame, gameOptions]);
+
+    const restartGame = useCallback(() => {
+      setGame(new Game(gameOptions));
+      setMovesNumber(0);
+      setScore(Array.from(Array(gameOptions.playersNumber).fill(0)));
+      setWinner(undefined);
+      setEnded(false);
+      resetTimer();
+    }, [gameOptions, resetTimer]);
+
+    const endGame = useCallback(() => {
+      setEnded(true);
+      setTimerInited(false);
+    }, []);
 
     const context: TAppContext = {
       gameOptions,
@@ -132,8 +159,8 @@ const withContextProvider: HOC = (Component) => {
       setDiscTheme,
       game,
       setGame,
-      currentPlayer,
-      setCurrentPlayer,
+      currentTurn,
+      setCurrentTurn,
       newGame,
       restartGame,
       score,
@@ -142,8 +169,17 @@ const withContextProvider: HOC = (Component) => {
       setMovesNumber,
       mobileModalShow,
       setMobileModalShow,
-      timer,
-      setTimer,
+      endGame,
+      setWinner,
+      showWinnersBoard,
+      setShowWinnersBoard,
+      minutes,
+      seconds,
+      setMinutes,
+      setSeconds,
+      gridSize,
+      timerInited,
+      setTimerInited,
     };
 
     return (

@@ -5,8 +5,8 @@ test("The grid is initialized properly for the 4x4 size", () => {
   const game = new Game({
     gridSize: GridSizeEnum.small,
     playersNumber: 1,
-    score: [0],
     discTheme: DiscThemeEnum.numbers,
+    moves: 0,
   });
 
   // assert
@@ -18,8 +18,8 @@ test("The grid is initialized properly for the 6x6 size", () => {
   const game = new Game({
     gridSize: GridSizeEnum.large,
     playersNumber: 1,
-    score: [0],
     discTheme: DiscThemeEnum.numbers,
+    moves: 0,
   });
 
   // assert
@@ -31,8 +31,8 @@ test("When the game starts, player 1 is first", () => {
   const game = new Game({
     gridSize: GridSizeEnum.large,
     playersNumber: 2,
-    score: [0, 0],
     discTheme: DiscThemeEnum.numbers,
+    moves: 0,
   });
   // assert
   expect(game.currentTurn).toBe(1);

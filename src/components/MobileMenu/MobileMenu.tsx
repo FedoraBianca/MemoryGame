@@ -5,13 +5,8 @@ import AppContext from "../../AppContext";
 import { useNavigate } from "react-router-dom";
 
 const MobileMenu: React.FC = () => {
-  const {
-    restartGame,
-    newGame,
-    gameOptions,
-    mobileModalShow,
-    setMobileModalShow,
-  } = useContext(AppContext);
+  const { restartGame, mobileModalShow, setMobileModalShow, newGame } =
+    useContext(AppContext);
   const navigate = useNavigate();
 
   const resumeGameOnClick = () => {
@@ -20,6 +15,11 @@ const MobileMenu: React.FC = () => {
 
   const handleNewGame = () => {
     navigate(`/`);
+    newGame();
+
+    if (mobileModalShow) {
+      setMobileModalShow(false);
+    }
   };
 
   const handleGameRestart = () => {

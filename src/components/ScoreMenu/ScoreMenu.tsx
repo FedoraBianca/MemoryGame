@@ -2,18 +2,11 @@ import { ScoreMenuStyle } from "./ScoreMenu.style";
 import Heading from "../Heading";
 import Button from "../Button";
 import { theme } from "../../styles/Theme.style";
-
-const currentPlayer = {
-  number: 1,
-  winner: true,
-};
-
-const numberOfPlayers = [1, 2, 3, 4];
-
-const pairsMatched = 8;
+import AppContext from "../../AppContext";
+import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 
 const headingStatus = {
-  playerWins: `Player ${currentPlayer.number} Wins!`,
   tie: "It's a tie!",
   singlePlayerWins: "You did it",
 };
@@ -24,50 +17,142 @@ const gameOverText = {
 };
 
 const ScoreMenu: React.FC = () => {
+  const {
+    game,
+    restartGame,
+    movesNumber,
+    score,
+    setMobileModalShow,
+    setShowWinnersBoard,
+    showWinnersBoard,
+    minutes,
+    seconds,
+    newGame,
+  } = useContext(AppContext);
+  const navigate = useNavigate();
+
   let scoreCardWrapper;
-  if (numberOfPlayers.length > 1) {
-    scoreCardWrapper = numberOfPlayers.map((player: number, i) => (
-      <div className={`score-card ${currentPlayer.winner ? "winner" : ""}`}>
-        <span className="label">
-          Player {player} {currentPlayer.winner ? "(Winner!)" : ""}
-        </span>
-        <span className="value">{pairsMatched} Pairs</span>
-      </div>
-    ));
-  } else {
-    scoreCardWrapper = (
-      <>
-        <div className="score-card">
-          <span className="label">Time elapsed</span>
-          <span className="value">1:53</span>
-        </div>
-        <div className="score-card">
-          <span className="label">Moves Taken</span>
-          <span className="value">39 Moves</span>
-        </div>
-      </>
-    );
+
+  if (score) {
+    const scoreDescendWidthIndex = score
+      .map((v, i) => ({
+        value: v,
+        playerIndex: i,
+      }))
+      .sort((a, b) => b.value - a.value);
+
+    if (game?.playersNumber !== undefined) {
+      if (game?.playersNumber > 1) {
+        if (game?.tieMatch) {
+          scoreCardWrapper = scoreDescendWidthIndex?.map((score, i) => (
+            <div
+              className={`score-card ${
+                game?.winner === score.value ? "winner" : ""
+              }`}
+            >
+              <span className="label">
+                Player {score.playerIndex + 1}{" "}
+                {game?.winner === score.value ? "(Winner!)" : ""}
+              </span>
+              <span className="value">{score.value} Pairs</span>
+            </div>
+          ));
+        } else {
+          scoreCardWrapper = scoreDescendWidthIndex?.map((score, i) => (
+            <div
+              className={`score-card ${
+                game?.winner === score.value ? "winner" : ""
+              }`}
+            >
+              <span className="label">
+                Player {score.playerIndex + 1}{" "}
+                {game?.winner === score.value ? "(Winner!)" : ""}
+              </span>
+              <span className="value">{score.value} Pairs</span>
+            </div>
+          ));
+        }
+      } else {
+        scoreCardWrapper = (
+          <>
+            <div className="score-card">
+              <span className="label">Time elapsed</span>
+              <span className="value">
+                {minutes} : {seconds < 10 ? `0${seconds}` : seconds}
+              </span>
+            </div>
+            <div className="score-card">
+              <span className="label">Moves Taken</span>
+              <span className="value">{movesNumber}</span>
+            </div>
+          </>
+        );
+      }
+    }
   }
+
+  let headingStatusElement;
+  if (game?.tieMatch) {
+    headingStatusElement = (
+      <Heading size="S" children={headingStatus.tie} className="heading" />
+    );
+  } else {
+    if (game?.playersNumber && game?.playersNumber === 1) {
+      headingStatusElement = (
+        <Heading
+          size="S"
+          children={headingStatus.singlePlayerWins}
+          className="heading"
+        />
+      );
+    } else {
+      headingStatusElement = (
+        <Heading
+          size="S"
+          children={`Player ${game?.currentTurn} Wins!`}
+          className="heading"
+        />
+      );
+    }
+  }
+
+  const handleGameRestart = () => {
+    restartGame();
+    setMobileModalShow(false);
+
+    if (showWinnersBoard) {
+      setShowWinnersBoard(false);
+    }
+  };
+
+  const handleNewGame = () => {
+    navigate(`/`);
+    newGame();
+
+    if (showWinnersBoard) {
+      setShowWinnersBoard(false);
+    }
+  };
 
   return (
     <ScoreMenuStyle>
       <div style={{ textAlign: "center" }}>
+        {headingStatusElement}
         <Heading
           size="S"
-          children={headingStatus.playerWins}
-          className="heading"
-        />
-        <Heading
-          size="S"
-          children={gameOverText.multiplePlayersStatus}
+          children={
+            game?.playersNumber && game?.playersNumber > 1
+              ? gameOverText.multiplePlayersStatus
+              : gameOverText.singlePlayerStatus
+          }
           color={theme.colors.mediumBlue}
           className="sub-heading"
         />
       </div>
       <div>{scoreCardWrapper}</div>
       <div className="btn-container">
-        <Button type="L" btnText="Restart" onClick={() => {}} />
-        <Button type="S" btnText="Setup New Game" onClick={() => {}} />
+        <Button type="L" btnText="Restart" onClick={handleGameRestart} />
+        <Button type="S" btnText="Setup New Game" onClick={handleNewGame} />
       </div>
     </ScoreMenuStyle>
   );
