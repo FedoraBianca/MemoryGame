@@ -4,22 +4,29 @@ export interface IBoard {
   boardSize: 4 | 6;
 }
 
+export interface IGamePageStyles {
+  children?: JSX.Element | JSX.Element[];
+}
+
 export const BoardStyle = styled.div<IBoard>`
   display: grid;
+  gap: ${(props: IBoard) => (props.boardSize === 6 ? "3%" : "6%")};
   grid-template-columns: repeat(${(props: IBoard) => props.boardSize}, 1fr);
   grid-template-rows: repeat(${(props: IBoard) => props.boardSize}, 1fr);
-  aspect-ratio: 1;
 
   @media (min-width: 768px) {
-    max-width: 50%;
-    height: 100%;
+    max-width: ${(props: IBoard) => (props.boardSize === 6 ? "86%" : "61%")};
+    height: ${(props: IBoard) => (props.boardSize === 6 ? "72vh" : "51vh")};
     margin: 0 auto;
-    gap: 5%;
     width: 100%;
+  }
+
+  @media (min-width: 1024px) {
+    max-width: 52%;
   }
 `;
 
-export const GamePageStyles = styled.div`
+export const GamePageStyles = styled.div<IGamePageStyles>`
   padding: 24px;
   display: grid;
   grid-template-rows: 40px 1fr 78px;

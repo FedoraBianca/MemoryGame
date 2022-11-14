@@ -19,8 +19,8 @@ export interface IDisc {
 export interface IGameOptions {
   gridSize: GridSizeEnum;
   playersNumber: PlayerNumberType;
-  score: number[];
   discTheme: DiscThemeEnum;
+  moves: number;
 }
 
 export class Game {
@@ -29,12 +29,14 @@ export class Game {
   private _currentTurn: PlayerNumberType = 1;
   private _gridSize: GridSizeEnum;
   private _playersNumber: PlayerNumberType;
-  private _winner: PlayerNumberType | null = null;
+  private _winner: PlayerNumberType | number | null = null;
+  private _tieMatch: boolean;
   private _score: number[];
   private _discSelection: number[] = [];
   private _assesmentInProgress: boolean = false;
 
   constructor(options: IGameOptions) {
+    this._tieMatch = false;
     this._gridSize = options.gridSize;
     this._playersNumber = options.playersNumber;
     let values: number[] =
@@ -53,7 +55,6 @@ export class Game {
         (this._grid[index] = { value, flipped: false, selected: false })
     );
     this._score = Array(this._playersNumber).fill(0);
-    console.log("grid in constructor: ", this.grid);
   }
 
   public get grid() {
@@ -84,9 +85,20 @@ export class Game {
     return this._discSelection;
   }
 
+  public get playersNumber() {
+    return this._playersNumber;
+  }
+
+  public get tieMatch() {
+    return this._tieMatch;
+  }
+
+  public get assesmentInProgress() {
+    return this._assesmentInProgress;
+  }
+
   flipDisc = (index: number) => {
     // If the disc is already flipped or the assessment is in progress we don't do anything
-    console.log("grid in flipDisc method", this.grid);
     if (this.grid[index].flipped !== true || !this._assesmentInProgress) {
       this._discSelection.push(index);
       this._grid[index] = {
@@ -99,8 +111,31 @@ export class Game {
         setTimeout(() => {
           this.assesDiscSelection();
           this._assesmentInProgress = false;
-          this.updatePlayersTurn();
         }, 100);
+      }
+
+      if (this.allDiscsAreFliped()) {
+        if (this._playersNumber === 1) {
+          this._winner = this._currentTurn;
+        } else {
+          let scoreMap = this._score.map((score, index) => ({
+            score: score,
+            index: index + 1,
+          }));
+
+          scoreMap[this._currentTurn - 1].score++;
+          const newScore = scoreMap.map((object) => object.score);
+          let maxScore = Math.max(...newScore.map((o) => o));
+
+          let count = newScore.filter((x) => x === maxScore).length;
+          if (count > 1) {
+            this._tieMatch = true;
+          } else {
+            this._tieMatch = false;
+          }
+
+          this._winner = maxScore;
+        }
       }
     }
   };
@@ -127,6 +162,7 @@ export class Game {
         selected: false,
         flipped: false,
       };
+      this.updatePlayersTurn();
     }
     // After managing the selection we clear it to make room fot the new one
     this._discSelection = [];

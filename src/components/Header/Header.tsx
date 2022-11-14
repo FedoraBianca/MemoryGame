@@ -5,17 +5,26 @@ import Button from "../Button";
 import { HeaderStyles } from "./Header.style";
 import { theme } from "../../styles/Theme.style";
 import { useNavigate } from "react-router-dom";
-import { ProgressPlugin } from "webpack";
+import AppContext from "../../AppContext";
+import { useContext } from "react";
 
 export interface IHeader {
   handleClick: (e: React.MouseEvent) => void;
 }
 
 const Header: React.FC<IHeader> = ({ handleClick }) => {
+  const { restartGame, setMobileModalShow, newGame } = useContext(AppContext);
+
   const navigate = useNavigate();
 
   const handleNewGame = () => {
     navigate(`/`);
+    newGame();
+  };
+
+  const handleGameRestart = () => {
+    restartGame();
+    setMobileModalShow(false);
   };
 
   return (
@@ -27,7 +36,7 @@ const Header: React.FC<IHeader> = ({ handleClick }) => {
         <Button
           type="S"
           color={theme.colors.orange}
-          onClick={() => {}}
+          onClick={handleGameRestart}
           btnText="Restart"
         />
         <Button type="S" onClick={handleNewGame} btnText="New Game" />

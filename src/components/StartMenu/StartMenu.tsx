@@ -11,14 +11,8 @@ import {
 import AppContext from "../../AppContext";
 
 const StartMenu: React.FC = () => {
-  const {
-    gameOptions,
-    setGameOptions,
-    discTheme,
-    setDiscTheme,
-    newGame,
-    setScore,
-  } = useContext(AppContext);
+  const { gameOptions, setGameOptions, discTheme, setDiscTheme, newGame } =
+    useContext(AppContext);
   const navigate = useNavigate();
 
   const updatePlayerNumber = (number: PlayerNumberType) => () => {
@@ -31,8 +25,7 @@ const StartMenu: React.FC = () => {
 
   const handleStartGame = () => {
     navigate(`/game`);
-    newGame(gameOptions.playersNumber);
-    setScore(Array(gameOptions.playersNumber).fill(0));
+    newGame();
   };
 
   return (

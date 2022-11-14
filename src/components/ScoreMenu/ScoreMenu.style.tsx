@@ -60,7 +60,7 @@ export const ScoreMenuStyle = styled.div`
       grid-template-rows: none;
     }
 
-    > div {
+    > button {
       height: 48px;
     }
 

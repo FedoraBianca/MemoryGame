@@ -1,6 +1,10 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
-export const ModalWrapper = styled.div`
+interface IModalWrapper {
+  isVisible: boolean;
+}
+
+export const ModalWrapper = styled.div<IModalWrapper>`
   position: absolute;
   top: 0;
   right: 0;
@@ -8,7 +12,7 @@ export const ModalWrapper = styled.div`
   left: 0;
   z-index: 100;
 
-  display: flex;
+  display: ${(prop) => (prop.isVisible ? "flex" : "none")};
   justify-content: center;
   align-items: center;
 
