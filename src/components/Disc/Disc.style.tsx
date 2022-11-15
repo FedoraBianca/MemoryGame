@@ -1,17 +1,25 @@
 import styled from "styled-components";
 import { theme } from "../../styles/Theme.style";
 
-export const DiscStyle = styled.div`
+enum GridSizeEnum {
+  small,
+  large,
+}
+
+export interface IDiscStyle {
+  gridSize: GridSizeEnum.small | GridSizeEnum.large;
+}
+
+export const DiscStyle = styled.div<IDiscStyle>`
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 46.88px;
-  min-height: 46.88px;
-  max-width: 80px;
-  max-height: 80px;
+  width: ${(props) =>
+    props.gridSize === GridSizeEnum.small ? "72.53px" : "46.88px"};
   color: ${theme.colors.lightWhite};
   background-color: ${theme.colors.charcoal};
-  font-size: 56px;
+  font-size: ${(props) =>
+    props.gridSize === GridSizeEnum.small ? "40px" : "24px"};
   border-radius: 50%;
   cursor: pointer;
   aspect-ratio: 1;
@@ -19,6 +27,8 @@ export const DiscStyle = styled.div`
   @media (min-width: 768px) {
     width: 80px;
     height: 80px;
+    font-size: ${(props) =>
+      props.gridSize === GridSizeEnum.small ? "40px" : "44px"};
   }
 
   .content {
@@ -36,5 +46,11 @@ export const DiscStyle = styled.div`
 
   &.selected {
     background-color: ${theme.colors.orange};
+  }
+
+  @media (min-width: 768px) {
+    .icon {
+      font-size: 36px;
+    }
   }
 `;

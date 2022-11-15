@@ -135,6 +135,7 @@ const GamePage: React.FC = () => {
                 onClick={(event) => handleDiscClick(event, index)}
                 disc={game.grid[index]}
                 key={index}
+                gridSize={gameOptions.gridSize}
               ></Disc>
             );
           })}

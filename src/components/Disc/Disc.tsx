@@ -1,31 +1,49 @@
 import React, { useContext, useEffect, useState } from "react";
 import AppContext from "../../AppContext";
 import { theme } from "../../styles/Theme.style";
-import { DiscThemeEnum, IDisc } from "../../utils/game";
+import { DiscThemeEnum, IDisc, GridSizeEnum } from "../../utils/game";
 import Icon from "../Icon";
 import { DiscStyle } from "./Disc.style";
 
 export interface IDiscProps {
   onClick: (e: React.MouseEvent) => void;
   disc: IDisc;
+  gridSize: GridSizeEnum;
 }
 
-const Disc: React.FC<IDiscProps> = ({
-  onClick,
-  disc
-}) => {
+const Disc: React.FC<IDiscProps> = ({ onClick, disc, gridSize }) => {
   const { discTheme } = useContext(AppContext);
-  const iconList: string[] = ['camera', 'headphones', 'music', 'pacman', 'spades', 'clubs', 'binoculars', 'lock', 'lock', 'bug', 'trophy', 'gift', 'mug', 'airplane', 'power', 'attachment', 'sun', 'star-full', 'heart'];
-  const [styleClass, setStypeClass] = useState('');
+  const iconList: string[] = [
+    "camera",
+    "headphones",
+    "music",
+    "pacman",
+    "spades",
+    "clubs",
+    "binoculars",
+    "lock",
+    "lock",
+    "bug",
+    "trophy",
+    "gift",
+    "mug",
+    "airplane",
+    "power",
+    "attachment",
+    "sun",
+    "star-full",
+    "heart",
+  ];
+  const [styleClass, setStypeClass] = useState("");
 
   useEffect(() => {
-    let className = '';
+    let className = "";
     if (disc.flipped) {
-      className = className + ' flipped';
+      className = className + " flipped";
     }
 
     if (disc.selected) {
-      className = className + ' selected';
+      className = className + " selected";
     }
 
     setStypeClass(className);
@@ -36,19 +54,17 @@ const Disc: React.FC<IDiscProps> = ({
   };
 
   return (
-    <DiscStyle
-      onClick={handleClick}
-      className={styleClass}
-    >
-      <div className='content'>
+    <DiscStyle onClick={handleClick} className={styleClass} gridSize={gridSize}>
+      <div className="content">
         {discTheme === DiscThemeEnum.numbers && <span>{disc.value}</span>}
-        {discTheme === DiscThemeEnum.icons &&
+        {discTheme === DiscThemeEnum.icons && (
           <Icon
             icon={iconList[disc.value - 1]}
-            size='36px'
+            size="28px"
             color={theme.colors.lightWhite}
+            className="icon"
           />
-        }
+        )}
       </div>
     </DiscStyle>
   );
