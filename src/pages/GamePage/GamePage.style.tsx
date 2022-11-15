@@ -10,19 +10,17 @@ export interface IGamePageStyles {
 
 export const BoardStyle = styled.div<IBoard>`
   display: grid;
-  gap: ${(props: IBoard) => (props.boardSize === 6 ? "3%" : "6%")};
+  gap: ${(props: IBoard) => (props.boardSize === 6 ? "9px" : "12px")};
   grid-template-columns: repeat(${(props: IBoard) => props.boardSize}, 1fr);
   grid-template-rows: repeat(${(props: IBoard) => props.boardSize}, 1fr);
+  justify-self: center;
+  max-width: fit-content;
 
   @media (min-width: 768px) {
-    max-width: ${(props: IBoard) => (props.boardSize === 6 ? "86%" : "61%")};
+    gap: ${(props: IBoard) => (props.boardSize === 6 ? "16px" : "12px")};
     height: ${(props: IBoard) => (props.boardSize === 6 ? "72vh" : "51vh")};
     margin: 0 auto;
     width: 100%;
-  }
-
-  @media (min-width: 1024px) {
-    max-width: 52%;
   }
 `;
 
@@ -32,6 +30,7 @@ export const GamePageStyles = styled.div<IGamePageStyles>`
   grid-template-rows: 40px 1fr 78px;
   gap: 10%;
   height: 100%;
+  align-items: center;
 
   @media (min-width: 768px) {
     grid-template-rows: 52px 1fr 92px;
@@ -58,7 +57,6 @@ export const GamePageStyles = styled.div<IGamePageStyles>`
   @media (min-width: 768px) {
     .footer {
       gap: 10px;
-      padding-bottom: 100px;
     }
   }
 
